@@ -6,6 +6,8 @@ import altair as alt
 import math
 import pandas as pd
 import streamlit as st
+import streamlit.components.v1 as components
+
 import pathlib
 
 from dotenv import load_dotenv
@@ -22,11 +24,11 @@ add_selectbox = st.sidebar.selectbox(
     ('python', 'javascript')
 )
 
-st.write(pathlib.Path.home())
+# st.write(pathlib.Path.home())
 
 def make_prompt(query):
     # return f"""Given this query, what would be the top result from StackOverflow for it?
-    return f"""Given this query, give example code that explains the answer to the query in the most concise way possible. Add comments to explain the code.
+    return f"""Given this query, give example code that explains the answer to the query in the most concise way possible. The example code can import any library but the code must be executable as-is.
 
 Query: {query}
 Code: ```python"""
@@ -89,4 +91,7 @@ def run_output(query):
     return format_for_output(completion)
 
 st.write(run_output(txt))
+
+components.iframe("https://replit.com/@replit/Python", width=1000, height=800)
+
 
