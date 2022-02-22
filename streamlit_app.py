@@ -6,44 +6,64 @@ import altair as alt
 import math
 import pandas as pd
 import streamlit as st
+import pathlib
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-"""
-# Welcome to Streamlit!
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
-Edit `/streamlit_app.py` to customize this app to your heart's desire :heart:
+st.title('Codex')
 
-If you have any questions, checkout our [documentation](https://docs.streamlit.io) and [community
-forums](https://discuss.streamlit.io).
+# Add a selectbox to the sidebar:
+add_selectbox = st.sidebar.selectbox(
+    'Language',
+    ('python', 'javascript')
+)
 
-In the meantime, below is an example of what you can do with just a few lines of code:
-"""
+st.write(pathlib.Path.home())
 
+def make_prompt(query):
+    return f"""# Python Short Queries to Code
 
-with st.echo(code_location='below'):
-    total_points = st.slider("Number of points in spiral", 1, 5000, 2000)
-    num_turns = st.slider("Number of turns in spiral", 1, 100, 9)
+## Dict to JSON String
 
-    Point = namedtuple('Point', 'x y')
-    data = []
+### Short Query: python dict to json string
+### Example Code:
+```python
+import json
 
-    openai.api_key = os.getenv("OPENAI_API_KEY")
-    openai.Engine.list()
+# Make a dict
+d = dict(a=1, b=2)
 
+# Convert to JSON string
+j = json.dumps(d)
 
-    points_per_turn = total_points / num_turns
+# Print the JSON string
+print(j)
+```
 
-    for curr_point_num in range(total_points):
-        curr_turn, i = divmod(curr_point_num, points_per_turn)
-        angle = (curr_turn + 1) * 2 * math.pi * i / points_per_turn
-        radius = curr_point_num / total_points
-        x = radius * math.cos(angle)
-        y = radius * math.sin(angle)
-        data.append(Point(x, y))
+### Short Query: ${query}
+### Example Code:"""
 
-    st.altair_chart(alt.Chart(pd.DataFrame(data), height=500, width=500)
-        .mark_circle(color='#0068c9', opacity=0.5)
-        .encode(x='x:Q', y='y:Q'))
+def process_query(query):
+    if len(query) == 0:
+        return None
+
+    prompt = make_prompt(query)
+
+    completion = openai.Completion.create(
+      engine="code-davinci-001",
+      prompt=prompt,
+      max_tokens=500,
+    )
+
+    choice_0 = completion.choices[0].text;
+
+    return choice_0
+
+txt = st.text_area('Code Query', '', height=50)
+
+st.write('Sentiment:', process_query(txt))
+
