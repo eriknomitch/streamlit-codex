@@ -1,8 +1,15 @@
+import os
+import openai
+
 from collections import namedtuple
 import altair as alt
 import math
 import pandas as pd
 import streamlit as st
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 """
 # Welcome to Streamlit!
@@ -22,6 +29,10 @@ with st.echo(code_location='below'):
 
     Point = namedtuple('Point', 'x y')
     data = []
+
+    openai.api_key = os.getenv("OPENAI_API_KEY")
+    openai.Engine.list()
+
 
     points_per_turn = total_points / num_turns
 
