@@ -92,6 +92,6 @@ def run_output(query):
 
 st.write(run_output(txt))
 
-components.iframe("https://replit.com/@replit/Python", width=1000, height=800)
+# components.iframe("https://replit.com/@replit/Python", width=1000, height=800)
 
 
