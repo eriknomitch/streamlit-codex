@@ -34,10 +34,10 @@ add_selectbox = st.sidebar.selectbox(
 
 def make_prompt(query):
     # return f"""Given this query, what would be the top result from StackOverflow for it?
-    return f"""Given this query, give commented example code that explains the answer to the query in the most concise way possible. The example code should import as required and the code must be executable as-is.
+    return f"""Given this query, give example code that explains the answer to the query in the most concise way possible. The example code should import any libraries used in it.
 
 Query: {query}
-Code (Commented): ```python"""
+Code (with comments): ```python"""
 
 # def make_prompt(query):
 #     return f"""# Python Short Queries to Code
@@ -72,10 +72,10 @@ def process_query(query):
     prompt = make_prompt(query)
 
     completion = openai.Completion.create(
-        engine="code-davinci-001",
+        engine="code-davinci-002",
         prompt=prompt,
         max_tokens=500,
-        stop=["```", "### Short Query:"],
+        stop=["```"],
         temperature=0
     )
 
