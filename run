@@ -1,1 +1,2 @@
+#!/usr/bin/env zsh
 pipenv run streamlit run streamlit_app.py
