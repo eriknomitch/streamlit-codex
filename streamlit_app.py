@@ -21,6 +21,13 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 generated_code = ""
 code_query = ""
 
+examples = {
+    "python": [
+        "yaml file to dict",
+        "get time delta as json"
+    ]
+}
+
 # -----------------------------
 
 st.title('Query to Code')
@@ -114,7 +121,9 @@ with st.expander("Examples"):
     _Tip:_ Try using a query that you'd usually Google for.
 
     '''
-    st.button("get time delta as JSON", on_click=lambda: run_example("get time delta as JSON"))
+
+    for example in examples['python']:
+        st.button(example, on_click=lambda: run_example(example))
 
 
 code_query = st.text_area('Code Query', value=code_query, height=50, key='code_query', placeholder='Enter a query that describes code...')
