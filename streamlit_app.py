@@ -8,6 +8,8 @@ import pandas as pd
 import streamlit as st
 import streamlit.components.v1 as components
 
+from streamlit_ace import st_ace, KEYBINDINGS, LANGUAGES, THEMES
+
 import pathlib
 
 from dotenv import load_dotenv
@@ -15,6 +17,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
+
+generated_code = ""
+
+# -----------------------------
 
 st.title('Query to Code')
 
@@ -28,10 +34,10 @@ add_selectbox = st.sidebar.selectbox(
 
 def make_prompt(query):
     # return f"""Given this query, what would be the top result from StackOverflow for it?
-    return f"""Given this query, give example code that explains the answer to the query in the most concise way possible. The example code can import any library but the code must be executable as-is.
+    return f"""Given this query, give commented example code that explains the answer to the query in the most concise way possible. The example code should import as required and the code must be executable as-is.
 
 Query: {query}
-Code: ```python"""
+Code (Commented): ```python"""
 
 # def make_prompt(query):
 #     return f"""# Python Short Queries to Code
@@ -80,10 +86,14 @@ def process_query(query):
 txt = st.text_area('Code Query', '', height=50)
 
 def run_output(query):
+    global generated_code
+
     if len(query) == 0:
         return None
 
     completion = process_query(query)
+
+    generated_code = completion.strip()
 
     if completion is None:
         return None
@@ -91,6 +101,12 @@ def run_output(query):
     return format_for_output(completion)
 
 st.write(run_output(txt))
+
+# # Spawn a new Ace editor
+# content = st_ace(value=generated_code, readonly=True, language="python")
+
+# # Display editor's content as you type
+# content
 
 # components.iframe("https://replit.com/@replit/Python", width=1000, height=800)
 
