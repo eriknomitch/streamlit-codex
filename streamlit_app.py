@@ -19,6 +19,7 @@ load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 generated_code = ""
+code_query = ""
 
 # -----------------------------
 
@@ -83,8 +84,6 @@ def process_query(query):
 
     return choice_0
 
-txt = st.text_area('Code Query', '', height=50)
-
 def run_output(query):
     global generated_code
 
@@ -93,20 +92,44 @@ def run_output(query):
 
     completion = process_query(query)
 
-    generated_code = completion.strip()
-
     if completion is None:
         return None
 
-    return format_for_output(completion)
+    generated_code = completion.strip()
 
-st.write(run_output(txt))
+    return generated_code
 
-# # Spawn a new Ace editor
-# content = st_ace(value=generated_code, readonly=True, language="python")
+def run_example(example):
+    global code_query
 
-# # Display editor's content as you type
-# content
+    run_output(example)
+
+
+with st.expander("Examples"):
+    # '''
+
+    # > get time delta as JSON
+    # '''
+    '''
+    _Tip:_ Try using a query that you'd usually Google for.
+
+    '''
+    st.button("get time delta as JSON", on_click=lambda: run_example("get time delta as JSON"))
+
+
+code_query = st.text_area('Code Query', value=code_query, height=50, key='code_query', placeholder='Enter a query that describes code...')
+
+if code_query is not "":
+    run_output(code_query)
+
+# Spawn a new Ace editor
+# content = st_ace(value=generated_code, readonly=True, language="python", theme="monokai")
+
+if generated_code is not "":
+    st.markdown(format_for_output(generated_code))
+
+# Display editor's content as you type
+#content
 
 # components.iframe("https://replit.com/@replit/Python", width=1000, height=800)
 
