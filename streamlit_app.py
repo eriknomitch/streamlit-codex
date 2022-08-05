@@ -124,7 +124,7 @@ with st.expander("Examples"):
         #st.button(example, on_click=lambda: run_example(example))
         st.text(example)
 
-code_query = st.text_area('Code Query', value=code_query, height=50, key='code_query', placeholder=f"Enter a query that describes {language} code...")
+code_query = st.text_area(f"Code Query to {language}", value=code_query, height=50, key='code_query', placeholder=f"Enter a query that describes code...")
 
 if code_query != "":
     run_output(code_query)
