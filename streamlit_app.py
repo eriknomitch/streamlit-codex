@@ -43,6 +43,12 @@ examples = {
 
 st.title('Query to Code')
 
+'''
+_Made by [@eriknomitch](https://twitter.com/eriknomitch)_
+
+You're using my OpenAI API key so don't abuse the service. Contact me if you need to use it for something else.
+'''
+
 # Add a selectbox to the sidebar:
 language = st.sidebar.selectbox(
     'Language',
@@ -118,7 +124,7 @@ with st.expander("Examples"):
         #st.button(example, on_click=lambda: run_example(example))
         st.text(example)
 
-code_query = st.text_area('Code Query', value=code_query, height=50, key='code_query', placeholder='Enter a query that describes code...')
+code_query = st.text_area('Code Query', value=code_query, height=50, key='code_query', placeholder=f"Enter a query that describes {language} code...")
 
 if code_query != "":
     run_output(code_query)
