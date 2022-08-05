@@ -85,6 +85,8 @@ def process_query(query):
 def run_output(query):
     global generated_code
 
+    query = query.strip()
+
     if len(query) == 0:
         return None
 
@@ -100,8 +102,7 @@ def run_output(query):
 def run_example(example):
     global code_query
 
-    run_output(example)
-
+    #run_output(example)
 
 with st.expander("Examples"):
     # '''
@@ -114,18 +115,18 @@ with st.expander("Examples"):
     '''
 
     for example in examples[language]:
-        st.button(example, on_click=lambda: run_example(example))
-
+        #st.button(example, on_click=lambda: run_example(example))
+        st.text(example)
 
 code_query = st.text_area('Code Query', value=code_query, height=50, key='code_query', placeholder='Enter a query that describes code...')
 
-if code_query is not "":
+if code_query != "":
     run_output(code_query)
 
 # Spawn a new Ace editor
 # content = st_ace(value=generated_code, readonly=True, language="python", theme="monokai")
 
-if generated_code is not "":
+if generated_code != "":
     st.markdown(format_for_output(generated_code))
 
 # Display editor's content as you type
