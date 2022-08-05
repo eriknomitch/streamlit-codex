@@ -22,10 +22,21 @@ generated_code = ""
 code_query = ""
 
 examples = {
+    "golang": [
+        "iterate over array",
+        "create dict with keys 0 to 10",
+        "read JSON file as dict"
+    ],
     "python": [
         "yaml file to dict",
         "get time delta as json"
-    ]
+    ],
+    "javscript": [
+        "iterate over object"
+    ],
+    "typescript": [
+        "define interface",
+    ],
 }
 
 # -----------------------------
@@ -33,10 +44,12 @@ examples = {
 st.title('Query to Code')
 
 # Add a selectbox to the sidebar:
-add_selectbox = st.sidebar.selectbox(
+language = st.sidebar.selectbox(
     'Language',
-    ('python', 'javascript')
+    ('golang', 'python', 'javascript', 'typescript')
 )
+
+# st.text(language)
 
 # st.write(pathlib.Path.home())
 
@@ -45,33 +58,11 @@ def make_prompt(query):
     return f"""Given this query, give example code that explains the answer to the query in the most concise way possible. The example code should import any libraries used in it.
 
 Query: {query}
-Code (with comments): ```python"""
-
-# def make_prompt(query):
-#     return f"""# Python Short Queries to Code
-
-# ## Dict to JSON String
-
-# ### Short Query: python dict to json string
-# ### Example Code:
-# ```python
-# import json
-
-# # Make a dict
-# d = dict(a=1, b=2)
-
-# # Convert to JSON string
-# j = json.dumps(d)
-
-# # Print the JSON string
-# print(j)
-# ```
-
-# ### Short Query: ${query}
-# ### Example Code:"""
+Code (with comments): ```{language}
+"""
 
 def format_for_output(completion):
-    return f"```python\n{completion}```"
+    return f"```go\n{completion}```"
 
 def process_query(query):
     if len(query) == 0:
@@ -122,7 +113,7 @@ with st.expander("Examples"):
 
     '''
 
-    for example in examples['python']:
+    for example in examples[language]:
         st.button(example, on_click=lambda: run_example(example))
 
 
