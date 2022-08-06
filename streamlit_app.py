@@ -31,8 +31,9 @@ examples = {
         "yaml file to dict",
         "get time delta as json"
     ],
-    "javscript": [
-        "iterate over object"
+    "javascript": [
+        "iterate over object",
+        "get array of innerHTML of elements with class"
     ],
     "typescript": [
         "define interface",
