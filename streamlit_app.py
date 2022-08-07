@@ -69,7 +69,9 @@ Code (with comments): ```{language}
 """
 
 def format_for_output(completion):
-    return f"```go\n{completion}```"
+    # return f"```\n{completion}```"
+    print(completion)
+    return f"```{language}\n{completion}\n```"
 
 def process_query(query):
     if len(query) == 0:
