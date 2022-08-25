@@ -42,23 +42,20 @@ examples = {
 
 # -----------------------------
 
-st.title('Query to Code')
+st.title('Description to Code')
 
-'''
-_Made by [@eriknomitch](https://twitter.com/eriknomitch)_
-
-You're using my OpenAI API key so don't abuse the service. Contact me if you need to use it for something else.
-'''
+st.sidebar.subheader('Options')
 
 # Add a selectbox to the sidebar:
 language = st.sidebar.selectbox(
-    'Language',
-    ('golang', 'python', 'javascript', 'typescript')
+    'Choose Language',
+    ('golang', 'python', 'javascript', 'typescript', 'swift', 'rust', 'kotlin', 'julia', 'c', 'cpp', 'lua', 'html', 'css', 'sass')
 )
 
 # st.text(language)
 
 # st.write(pathlib.Path.home())
+
 
 def make_prompt(query):
     # return f"""Given this query, what would be the top result from StackOverflow for it?
@@ -68,10 +65,12 @@ Query: {query}
 Code (with comments): ```{language}
 """
 
+
 def format_for_output(completion):
     # return f"```\n{completion}```"
     print(completion)
     return f"```{language}\n{completion}\n```"
+
 
 def process_query(query):
     if len(query) == 0:
@@ -87,9 +86,10 @@ def process_query(query):
         temperature=0
     )
 
-    choice_0 = completion.choices[0].text;
+    choice_0 = completion.choices[0].text
 
     return choice_0
+
 
 def run_output(query):
     global generated_code
@@ -108,26 +108,42 @@ def run_output(query):
 
     return generated_code
 
+
 def run_example(example):
     global code_query
 
-    #run_output(example)
+    # run_output(example)
 
-with st.expander("Examples"):
-    # '''
+# st.markdown(f"## Query to Code: `{language}`")
 
-    # > get time delta as JSON
-    # '''
-    '''
-    _Tip:_ Try using a query that you'd usually Google for.
+'''
+_Made by [@eriknomitch](https://erik.is)_
 
-    '''
+> FYI: You're using my personal OpenAI API key so don't abuse the service. Contact me if you need to use it for something else.
+'''
 
-    for example in examples[language]:
-        #st.button(example, on_click=lambda: run_example(example))
-        st.text(example)
 
-code_query = st.text_area(f"Code Query to {language}", value=code_query, height=50, key='code_query', placeholder=f"Enter a query that describes code...")
+if language in examples:
+    with st.expander("Examples"):
+        # '''
+
+        # > get time delta as JSON
+        # '''
+        '''
+        '''
+
+        for example in examples[language]:
+            #st.button(example, on_click=lambda: run_example(example))
+            st.text(example)
+
+'''
+_Tip: Try using a query that you'd usually Google for._
+'''
+
+st.markdown(f"Current Language: `{language}`")
+
+code_query = st.text_area("", value=code_query, height=50,
+                          key='code_query', placeholder=f"Description of code...")
 
 if code_query != "":
     run_output(code_query)
@@ -139,8 +155,6 @@ if generated_code != "":
     st.markdown(format_for_output(generated_code))
 
 # Display editor's content as you type
-#content
+# content
 
 # components.iframe("https://replit.com/@replit/Python", width=1000, height=800)
-
-
